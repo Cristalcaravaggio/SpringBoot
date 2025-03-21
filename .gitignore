@@ -1,0 +1,7 @@
+*.log
+
+/build/
+
+config/local-settings.json
+
+/node_modules/

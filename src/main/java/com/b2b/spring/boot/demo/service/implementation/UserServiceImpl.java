@@ -2,6 +2,7 @@ package com.b2b.spring.boot.demo.service.implementation;
 
 import com.b2b.spring.boot.demo.Entity.User;
 import com.b2b.spring.boot.demo.dto.ModificaUser;
+import com.b2b.spring.boot.demo.dto.NuovoUser;
 import com.b2b.spring.boot.demo.dto.UserRecord;
 import com.b2b.spring.boot.demo.mapper.UserMapper;
 import com.b2b.spring.boot.demo.repository.UserRepo;
@@ -21,42 +22,22 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
+    public List<UserRecord> getAllUsers() {
+        return userRepo.findAll().stream().map(userMapper::toRecord).toList(); //oppure con lambda: user -> userMapper.toRecord(user))
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepo.findById(id).orElse(null);
+    public void insertUser(NuovoUser oUser) {
+        userRepo.save(userMapper.toEntity(oUser));
     }
 
     @Override
-    public User saveUser(User user) {
-        return userRepo.save(user);
+    public void updateUser(ModificaUser oUser) {
+        userRepo.save(userMapper.partialUpdate(userRepo.findById(oUser.id()).orElseThrow(), oUser));
     }
 
     @Override
-    public UserRecord updateUser(ModificaUser user) {
-        User oUser = userRepo.findById(user.id()).orElseThrow();
-        /*
-        if(user.getNome()!= null){
-            oUser.setNome(user.getNome());
-        }
-        if(user.getEmail()!= null){
-            oUser.setEmail(user.getEmail());
-        }
-        if (user.getDettaglio() != null){
-            oUser.setDettaglio(user.getDettaglio());
-        }
-        */
-        oUser =  userMapper.partialUpdate(oUser, user);
-        oUser = userRepo.save(oUser);
-        return userMapper.toRecord(oUser);
-
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
+    public void deleteById(Long id) {
         userRepo.deleteById(id);
     }
 }

@@ -2,6 +2,9 @@ package com.b2b.spring.boot.demo.controller;
 
 import com.b2b.spring.boot.demo.Entity.User;
 import com.b2b.spring.boot.demo.controller.api.UserAPI;
+import com.b2b.spring.boot.demo.dto.ModificaUser;
+import com.b2b.spring.boot.demo.dto.NuovoUser;
+import com.b2b.spring.boot.demo.dto.UserRecord;
 import com.b2b.spring.boot.demo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,34 +20,25 @@ public class UserController implements UserAPI {
    private final UserService userService;
 
     @Override
-    public ResponseEntity<List<User>> getAllUsers(HttpServletRequest request) {
+    public ResponseEntity<List<UserRecord>> getAllUsers(HttpServletRequest request) {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<User> getUserById(HttpServletRequest request, Long id) {
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<?> insertUser(HttpServletRequest request, User user) {
-        userService.saveUser(user);
+    public ResponseEntity<?> insertUser(HttpServletRequest request, NuovoUser user) {
+        userService.insertUser(user);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<?> updateUser(HttpServletRequest request, User user, Long id) {
-        if(userService.getUserById(id)!=null){
-            userService.updateUser(user,id);
-            return new ResponseEntity<>( HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> updateUser(HttpServletRequest request, ModificaUser user) {
+       userService.updateUser(user);
+       return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> deleteUserById(HttpServletRequest request, Long id) {
-        userService.deleteUserById(id);
+        userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
