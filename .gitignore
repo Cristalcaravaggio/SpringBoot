@@ -1,7 +1,20 @@
-*.log
+# Maven  
+target/
+mvnw  
+mvnw.cmd
 
+# Gradle  - gestore di dipendenze
 /build/
 
-config/local-settings.json
+# IntelliJ IDEA
+.idea/  
 
-/node_modules/
+# Configurazioni sensibili  
+.env
+
+# File di log e cache
+logs/  
+*.log
+
+# Config locali
+config/local-settings.json
