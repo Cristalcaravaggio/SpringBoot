@@ -1,0 +1,2 @@
+jwt:
+  secretKey: prod_secret_key

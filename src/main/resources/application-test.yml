@@ -1,0 +1,2 @@
+jwt:
+  secretKey: test_secret_key
